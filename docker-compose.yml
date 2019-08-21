@@ -1,0 +1,31 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      # args:
+      #   RAILS_VER: ${RUBY_VER}
+      #   GIT_URL: ${GIT_URL}
+    ports:
+      - 80:80
+    environment:
+      APP_DB_DATABASE: ${POSTGRES_DB}
+      APP_DB_USERNAME: ${POSTGRES_USER}
+      APP_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      APP_DB_HOST: ${POSTGRES_HOST}
+      APP_DB_PORT: ${POSTGRES_PORT}
+    depends_on:
+      - postgres
+    command: dockerize -wait tcp://postgres:5432
+  postgres:
+    image: postgres:11.3-alpine
+    ports:
+      - 5432
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+

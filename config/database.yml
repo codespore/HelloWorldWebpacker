@@ -80,6 +80,8 @@ test:
 #
 production:
   <<: *default
-  database: helloworld_production
-  username: helloworld
-  password: <%= ENV['HELLOWORLD_DATABASE_PASSWORD'] %>
+  database: <%= ENV['APP_DB_DATABASE'] %> # helloworld_production
+  username: <%= ENV['APP_DB_USERNAME'] %> # helloworld
+  password: <%= ENV['APP_DB_PASSWORD'] %>
+  host: <%= ENV['APP_DB_HOST'] %>
+  port: <%= ENV['APP_DB_PORT'] %>

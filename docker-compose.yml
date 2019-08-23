@@ -1,14 +1,12 @@
 version: '3'
 services:
   web:
+    restart: always
     build:
       context: .
       dockerfile: ./docker/Dockerfile
-      # args:
-      #   RAILS_VER: ${RUBY_VER}
-      #   GIT_URL: ${GIT_URL}
     ports:
-      - 80:80
+      - 8080:80
     environment:
       APP_DB_DATABASE: ${POSTGRES_DB}
       APP_DB_USERNAME: ${POSTGRES_USER}
@@ -17,7 +15,6 @@ services:
       APP_DB_PORT: ${POSTGRES_PORT}
     depends_on:
       - postgres
-    command: dockerize -wait tcp://postgres:5432
   postgres:
     image: postgres:11.3-alpine
     ports:

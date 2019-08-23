@@ -1,10 +1,12 @@
-FROM phusion/passenger-ruby26
+FROM phusion/passenger-ruby26:latest
 
 # Set correct environment variables.
 ENV HOME /root
 
 # Use baseimage-docker's init process.
 CMD ["/sbin/my_init"]
+
+EXPOSE 80
 
 # Enable nginx and passenger which is disabled by default
 RUN rm -f /etc/service/nginx/down
@@ -24,9 +26,6 @@ RUN chmod +x /etc/my_init.d/*.sh
 RUN mkdir /home/app/webapp
 COPY --chown=app:app . /home/app/webapp
 
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 # Install necessary packages
 RUN apt update && apt install --no-install-recommends -y curl wget
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -44,5 +43,7 @@ WORKDIR /home/app/webapp/
 RUN gem install bundler
 RUN bundle install --deployment --without development test
 RUN bundle exec rails webpacker:install
-RUN echo "Something"
-# RUN bundle exec rake assets:precompile
+RUN bundle exec rake assets:precompile --trace
+
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

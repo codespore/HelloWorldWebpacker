@@ -1,7 +1,10 @@
 version: '3'
+volumes:
+  postgres_db:
 services:
   web:
     restart: always
+    image: web_hellworld
     build:
       context: .
       dockerfile: ./docker/Dockerfile
@@ -24,5 +27,5 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - postgres_db:/var/lib/postgresql/data
 

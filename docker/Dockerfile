@@ -28,6 +28,9 @@ ADD ./docker/nginx.conf /etc/nginx/sites-enabled/webapp.conf
 ADD ./docker/rails-env.conf /etc/nginx/main.d/rails-env.conf
 
 # Add startup script to run during container startup
+# HOME env var is ignored in phusion baseimage-docker
+# - https://github.com/phusion/baseimage-docker#environment-variables
+RUN echo /root > /etc/container_environment/HOME
 RUN mkdir -p /etc/my_init.d
 ADD ./docker/startup.sh /etc/my_init.d/startup.sh
 RUN chmod +x /etc/my_init.d/*.sh
@@ -47,8 +50,7 @@ RUN gem install bundler && \
 
 # Application setup steps
 COPY --chown=app:app . .
-RUN bundle exec rails webpacker:install && \
-    bundle exec rake assets:precompile
+RUN bundle exec rake assets:precompile
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

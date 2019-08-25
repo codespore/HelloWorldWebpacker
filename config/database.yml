@@ -80,8 +80,8 @@ test:
 #
 production:
   <<: *default
-  database: <%= ENV['APP_DB_DATABASE'] %> # helloworld_production
-  username: <%= ENV['APP_DB_USERNAME'] %> # helloworld
-  password: <%= ENV['APP_DB_PASSWORD'] %>
-  host: <%= ENV['APP_DB_HOST'] %>
-  port: <%= ENV['APP_DB_PORT'] %>
+  database: <%= ENV['POSTGRES_DB'] %> # helloworld_production
+  username: <%= ENV['POSTGRES_USER'] %> # helloworld
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  host: <%= ENV['POSTGRES_HOST'] %>
+  port: <%= ENV['POSTGRES_PORT'] %>

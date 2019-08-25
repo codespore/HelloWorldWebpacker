@@ -1,0 +1,31 @@
+version: '3'
+volumes:
+  postgres_db:
+services:
+  web:
+    restart: always
+    image: web_hellworld
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - 8080:80
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:11.3-alpine
+    ports:
+      - 5432
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+

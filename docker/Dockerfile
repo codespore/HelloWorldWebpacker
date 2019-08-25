@@ -2,7 +2,6 @@ FROM phusion/passenger-ruby26:latest
 
 # Set correct environment variables.
 ENV HOME /root
-
 ENV RAILS_ENV "production"
 ENV GEM_HOME /usr/local/bundle
 ENV BUNDLE_PATH="$GEM_HOME" \
@@ -23,9 +22,6 @@ RUN rm -f /etc/service/nginx/down
 # Add NGINX configuration file
 RUN rm /etc/nginx/sites-enabled/default
 ADD ./docker/nginx.conf /etc/nginx/sites-enabled/webapp.conf
-
-# Add the rails-env configuration file so Nginx preserves the environment variables listed
-ADD ./docker/rails-env.conf /etc/nginx/main.d/rails-env.conf
 
 # Add startup script to run during container startup
 # HOME env var is ignored in phusion baseimage-docker
